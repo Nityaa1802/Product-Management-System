@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.tableHeader{
+   @apply text-gray-500 font-serif tracking-wide
+}
