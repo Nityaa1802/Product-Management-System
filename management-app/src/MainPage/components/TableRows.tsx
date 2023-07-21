@@ -2,28 +2,28 @@ import React from 'react'
 import Category from './category'
 import Ratings from './Ratings'
 
-const TableRows = () => {
+const TableRows = ({product}:any) => {
   return (
-    <div className=' bg-white rounded-lg grid grid-cols-12 gap-2 mx-8 mb-4 p-2 shadow-md border border-gray-300 items-center hover:bg-gray-100 hover:border-gray-400'>
+    <div className=' bg-white rounded-lg grid grid-cols-12 gap-4 mx-8 mb-4 p-2 shadow-lg border border-gray-300 items-center hover:bg-gray-100 hover:border-gray-400'>
           <div className='col-span-4 flex'>
-              <img src="https://images.pexels.com/photos/14260624/pexels-photo-14260624.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="" className='h-14 w-14 mr-3 rounded-md' />
-              <div className=''>
-              <h4 className=' font-medium text-gray-700'>i phone</h4>
-              <p className='text-xs text-gray-500 '>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam, totam.</p>
+        <img src={ product.thumbnail} alt="" className='h-14 w-14 mr-3 rounded-md' />
+              <div className='mr-2'>
+          <h4 className=' font-medium text-gray-700'>{ product.title}</h4>
+          <p className='text-xs text-gray-500 '>{ product.description.substring(0,81)+'...'}</p>
               </div>
           </div>
           
           <div className=' flex justify-start'>
-           <Category text='phone'/>
+        <Category text={product.category } />
         </div>
         <div className='font-medium text-gray-700'>
-          Apple
+          {product.brand}
         </div>
         <div className='font-medium text-gray-700'>
-          ₹15000.00
+          ₹ {product.price}
         </div>
         <div className=' text-red-500'>
-          10%
+          {product.discountPercentage}%
         </div>
         <div className='col-span-2'>
           <Ratings/>
