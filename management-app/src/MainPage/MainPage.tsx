@@ -1,40 +1,46 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import TableRows from './components/TableRows'
+import Pagination from '../Utils/Pagination';
+import axios from 'axios';
+import { log } from 'console';
 
 const Mainpage = () => {
+  window.scroll(0, 0);
+  const [limit, setLimit] = useState(5);
+  const [skip, setSkip] = useState(1);
+  const [allProducts, setAllProducts] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+  useEffect(() => {
+    axios.get(`https://dummyjson.com/products?limit=${limit}&skip=${skip-1*limit}`).then((res: any) => {
+      console.log(res)
+      setAllProducts(res.data.products)
+      setTotalCount(res.data.total)
+    }).catch((err) => (console.log(err)))
+  
+    
+  },[limit,skip])
+
+  
   return (
     <div className=' w-full h-full '>
-      <h1 className='m-10 font-thin font-serif text-3xl text-gray-600 inline   '>Products</h1>
+
       <div className='flex justify-between mx-5 my-1'>
-      <div  className='mx-5 md:mx-10 my-3  flex '>
+      <h1 className='m-5 font-thin font-serif text-3xl text-gray-600 inline   '>Products</h1>
+      <div  className='mx-5 md:mx-10 my-3  flex items-center '>
         
 
-        <select id="offset"
-          className= "bg-white border border-gray-300 text-gray-700  text-sm rounded-lg hover:shadow-inner focus:shadow-inner focus:ring-blue-500 focus:border-blue-500 block  p-1 px-2 dark:border-gray-300 shadow-sm  dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mx-5 font-semibold">
+        <select id="limit" onChange={(e)=>{setLimit(parseInt(e.target.value, 10))}}
+          className= "bg-white border p-2 border-gray-300 text-gray-700  text-sm rounded-lg hover:shadow-inner focus:shadow-inner focus:ring-blue-500 focus:border-blue-500 block   px-3 dark:border-gray-300 shadow-sm  dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mx-3 ">
   <option selected>5</option>
   <option value="10">10</option>
   <option value="15">15</option>
           <option value="25">25</option>
           </select>
-          <div className='flex'>
-            <button  className= "bg-white border border-gray-300 text-gray-700  text-sm  rounded-s-lg p-1 px-2 hover:font-semibold  shadow-sm hover:shadow-inner ">
-            { '<<'}
-          </button>
-          <button  className= "bg-white border border-gray-300 text-gray-700  text-sm  p-1 px-2  shadow-sm hover:font-semibold hover:shadow-inner ">
-            { '<'}
-            </button>
-        <div className= "bg-white border border-gray-300 text-gray-700  text-sm g p-2 px-4 shadow-sm  font-semibold">5</div>
-            <button  className= "bg-white border border-gray-300 text-gray-700  text-sm  p-1 px-2   shadow-sm hover:font-semibold hover:shadow-inner ">
-           {'>'}
-          </button>
-          <button  className= "bg-white border border-gray-300 text-gray-700 rounded-e-lg text-sm  p-1 px-2  shadow-sm hover:font-semibold hover:shadow-inner ">
-           {'>>'}
-            </button>
-          </div>  
 
 
-        </div>
-        <div className='flex items-center mx-5 md:mx-10 my-3 '>
+
+       
+
         <select id="categories"
           className= "bg-white border border-gray-300 text-gray-700  text-sm rounded-lg hover:shadow-inner focus:shadow-inner focus:ring-blue-500 focus:border-blue-500 block   px-3 dark:border-gray-300 shadow-sm  dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mx-5  p-2">
   <option selected>select a category</option>
@@ -53,7 +59,7 @@ const Mainpage = () => {
     </div>
         </div>
       </div>
-      <div className='grid gap-2 mx-8 p-4 grid-cols-12'>
+      <div className='grid gap-4 mx-8 p-4 grid-cols-12'>
         <div className='col-span-4 tableHeader
        
         '>
@@ -79,7 +85,8 @@ const Mainpage = () => {
         </div>
         
       </div>
-  { [1,2,3,4,5,6,7,8,9].map((i)=> <TableRows key={i}/>)}
+      {allProducts.map((product) => <TableRows key={product} product={product} />)}
+      <Pagination currentPage={skip} totalCount={totalCount} pageSize={limit} setSkip={setSkip} />
     </div>
   )
 }
