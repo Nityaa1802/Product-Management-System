@@ -10,7 +10,8 @@ const Navbar = () => {
       
           
 
-          <div className="flex items-center overflow-hidden bg-black ">
+        <div className="flex items-center overflow-hidden bg-black ">
+        <i className="fa fa-star text-lg text-white"></i>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="text-white md:w-8 md:h-8 m-3 md:mx-5 inline-block w-6 h-6 cursor-pointer bg-black "
