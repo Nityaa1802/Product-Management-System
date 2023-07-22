@@ -1,14 +1,9 @@
 export function usePagination({totalPages,currentPage}:any) {
-    // when there are less aor equal values then the pagination component
-    // when we are on the value less than pagination component-2 i.e less than 5
-    // when we want left dots when values are greator than total pages -4
-    // from 5-totalpages-4 both side dots
 
     const paginationComponents = 7;
     var pagesRange:any=[];
     if (totalPages <= paginationComponents) {
         pagesRange = range(1, totalPages);
-
         return pagesRange;
     }
     else {
@@ -23,9 +18,7 @@ export function usePagination({totalPages,currentPage}:any) {
         else if (currentPage > (totalPages - 4)) {
             pagesRange.push(1);
             pagesRange.push(-1);
- 
-            range(totalPages - 4, totalPages).map((i:any) => { pagesRange.push(i) });
-          
+            pagesRange.pushAll(range(totalPages - 4, totalPages));
             return pagesRange;
         }
         else {
@@ -36,7 +29,6 @@ export function usePagination({totalPages,currentPage}:any) {
             pagesRange.push(currentPage + 1);
             pagesRange.push(-1);
             pagesRange.push(totalPages);
-        
             return pagesRange;
         }
     }
