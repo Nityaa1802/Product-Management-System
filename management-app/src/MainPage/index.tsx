@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TableRows from "./components/TableRows";
 import Pagination from "../Utils/Pagination";
-import axios from "axios";
-import { error, log } from "console";
 import { product } from "../model/product";
 import {
   categories,
@@ -12,12 +10,12 @@ import {
 
 const Mainpage = () => {
   window.scroll(0, 0);
-  const [limit, setLimit] = useState(5);
-  const [skip, setSkip] = useState(1);
+  const [limit, setLimit] = useState<number>(5);
+  const [skip, setSkip] = useState<number>(1);
   const [allProducts, setAllProducts] = useState<product[]>([]);
-  const [totalCount, setTotalCount] = useState(0);
-  const [category, setCategory] = useState("");
-  const [search, setSearch] = useState("");
+  const [totalCount, setTotalCount] = useState<number>(0);
+  const [category, setCategory] = useState<string>("");
+  const [search, setSearch] = useState<string>("");
   const headers=[{"name":'Product Details',"span":4},{"name":'Category',"span":1},
   {"name":'Brand',"span":1},{"name":'Price',"span":1},{"name":'Discount',"span":1},{"name":'Rating',"span":1},
   {"name":'Action',"span":2}]

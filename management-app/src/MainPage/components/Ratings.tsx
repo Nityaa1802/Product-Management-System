@@ -14,11 +14,11 @@ const Ratings = (props: any) => {
     ratingCopy--;
   }
   return (
-    <div className="justify-start">
+    <span className="justify-start">
       {rating.map((rate) => {
         return <FontAwesomeIcon icon={rate} style={{ color: "#ffc800" }} />;
       })}
-    </div>
+    </span>
   );
 };
 
