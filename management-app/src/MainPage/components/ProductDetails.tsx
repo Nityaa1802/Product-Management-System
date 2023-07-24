@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { singleProduct } from "../../api/request";
@@ -68,7 +67,7 @@ const ProductDetails = () => {
           {product?.description}
         </h6>
         <span>
-          <Ratings rating={product?.rating} />
+        { (product?.rating!=undefined) && <Ratings ratings={product?.rating} />}
         </span>
         <span className="text-gray-500 font-medium">({product?.rating})</span>
         <hr className="my-5 bg-gray-400" />
@@ -88,7 +87,6 @@ const ProductDetails = () => {
           +
         </span>
         <span className="text-gray-600 font-semibold mx-4">
-          {" "}
           Hurry up! Only <span className="text-blue-600">
             {product?.stock}
           </span>{" "}

@@ -6,6 +6,7 @@ import {
   categories,
   paginatedProducts,
   productsByCategory,
+  searchProducts,
 } from "../api/request";
 
 const Mainpage = () => {
@@ -16,16 +17,24 @@ const Mainpage = () => {
   const [totalCount, setTotalCount] = useState<number>(0);
   const [category, setCategory] = useState<string>("");
   const [search, setSearch] = useState<string>("");
-  const headers=[{"name":'Product Details',"span":4},{"name":'Category',"span":1},
-  {"name":'Brand',"span":1},{"name":'Price',"span":1},{"name":'Discount',"span":1},{"name":'Rating',"span":1},
-  {"name":'Action',"span":2}]
+  const headers = [
+    { name: "Product Details", span: 4 },
+    { name: "Category", span: 1 },
+    { name: "Brand", span: 1 },
+    { name: "Price", span: 1 },
+    { name: "Discount", span: 1 },
+    { name: "Rating", span: 1 },
+    { name: "Action", span: 2 },
+  ];
   const [categoriesArr, setCategoriesArr] = useState<string[]>([]);
 
   function getProductsFromReq() {
-    paginatedProducts(limit, (skip - 1) * limit).then((data) => {
-      setAllProducts(data.products);
-      setTotalCount(data.total);
-    });
+    if (search === "" && category == "") {
+      paginatedProducts(limit, (skip - 1) * limit).then((data) => {
+        setAllProducts(data.products);
+        setTotalCount(data.total);
+      });
+    }
   }
 
   function getCategoriesFromReq() {
@@ -37,16 +46,36 @@ const Mainpage = () => {
   function getProductsByCategoryFromReq() {
     if (category !== "") {
       productsByCategory(category, limit, (skip - 1) * limit).then((data) => {
-        console.log(data);
         setAllProducts(data.products);
         setTotalCount(data.total);
       });
     }
   }
 
-  useEffect(getProductsFromReq, [limit, skip]);
+  function getSearchedProduct() {
+    if (search !== "") {
+      searchProducts(search, limit, (skip - 1) * limit).then((data) => {
+        console.log(data);
+        setAllProducts(data.products);
+        setTotalCount(data.total);
+      });
+    } else {
+      getProductsFromReq();
+    }
+  }
+  const debounce = () => {
+    var timer = setTimeout(() => {
+      getSearchedProduct();
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+  };
+
+  useEffect(getProductsFromReq, [limit, skip, search, category]);
   useEffect(getCategoriesFromReq, []);
   useEffect(getProductsByCategoryFromReq, [category, limit, skip]);
+  useEffect(debounce, [search, skip, limit]);
 
   return (
     <>
@@ -100,6 +129,11 @@ const Mainpage = () => {
               </svg>
             </div>
             <input
+              onChange={(e) => {
+                setCategory("");
+                setSearch(e.target.value);
+              }}
+              value={search}
               type="search"
               id="search"
               className="block w-full px-3 p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -112,10 +146,16 @@ const Mainpage = () => {
       <div className=" flex ">
         <div className="overflow-x-auto scroll scroll-smooth w-full whitespace-nowrap md:mx-5 ">
           <div className="grid gap-4 mx-8 p-4 grid-cols-11 rowsWidth">
-            {headers.map((header) => { return (<div className={`col-span-${header.span} tableHeader `}>{ header.name}</div>)})}           
+            {headers.map((header) => {
+              return (
+                <div className={`col-span-${header.span} tableHeader `}>
+                  {header.name}
+                </div>
+              );
+            })}
           </div>
-          {allProducts.map((product) => (
-            <TableRows key={product.id} product={product} />
+          {allProducts.map((productIter:product) => (
+            <TableRows key={productIter.id} Product={productIter} />
           ))}
         </div>
       </div>
