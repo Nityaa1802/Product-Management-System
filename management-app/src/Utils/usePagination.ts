@@ -18,7 +18,7 @@ export function usePagination({totalPages,currentPage}:any) {
         else if (currentPage > (totalPages - 4)) {
             pagesRange.push(1);
             pagesRange.push(-1);
-            pagesRange.pushAll(range(totalPages - 4, totalPages));
+            pagesRange.push(...range(totalPages - 4, totalPages));
             return pagesRange;
         }
         else {
