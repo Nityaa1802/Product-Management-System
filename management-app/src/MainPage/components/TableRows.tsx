@@ -2,7 +2,7 @@ import React from "react";
 import Category from "./category";
 import Ratings from "./Ratings";
 import { Link } from "react-router-dom";
-import { product } from "../../model/product";
+import { product } from "../../types/product";
 
 
 const TableRows = ({Product}:{Product:product}) => {

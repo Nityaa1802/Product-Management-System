@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { singleProduct } from "../../api/request";
-import { product } from "../../model/product";
+import { product } from "../../types/product";
 import Ratings from "./Ratings";
 
 const ProductDetails = () => {

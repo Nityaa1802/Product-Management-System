@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TableRows from "./components/TableRows";
 import Pagination from "../Utils/Pagination";
-import { product } from "../model/product";
+import { product } from "../types/product";
 import {
   categories,
   paginatedProducts,

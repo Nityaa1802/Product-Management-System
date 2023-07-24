@@ -1,4 +1,4 @@
 import React from "react";
-import { user } from "../model/user";
+import { user } from "../types/user";
 
-export const UserContext = React.createContext<Boolean>(false);
+export const UserContext = React.createContext<user>({} as user );
