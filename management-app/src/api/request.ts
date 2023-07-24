@@ -1,6 +1,8 @@
 import axios from "axios";
-import { product } from "../model/product";
-import { ProductResponse } from "../model/ProductResponse";
+import { product } from "../types/product";
+import { ProductResponse } from "../types/ProductResponse";
+import { cartProduct } from "../types/cartProduct";
+import { cartDetails } from "../types/cartDetails";
 
 const http = axios.create({
     baseURL: 'https://dummyjson.com'
@@ -39,7 +41,11 @@ export const login = async (username: string, password: string): Promise<any> =>
     return res.data;
 }
 
-export const getUser = async(userId:string): Promise<any>=> {
-    const res = await http.get(`https://dummyjson.com/users/${userId}`)
+export const getUser = async(userId:string): Promise<product>=> {
+    const res = await http.get(`/users/${userId}`)
     return res.data;
+}
+export const UsersCart = async (userId: number): Promise<cartDetails> => {
+    const res = await http.get(`/users/${userId}/carts`);
+    return res.data.carts[0];
 }
