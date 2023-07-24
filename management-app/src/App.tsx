@@ -1,43 +1,51 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from "react";
 
-import './App.css';
-import Mainpage from './MainPage';
-import Navbar from './Navbar';
-import { Route, Routes } from 'react-router-dom';
-import ProductDetails from './MainPage/components/ProductDetails';
-import axios from 'axios';
-
-
-
+import "./App.css";
+import Mainpage from "./MainPage";
+import Navbar from "./Navbar";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import ProductDetails from "./MainPage/components/ProductDetails";
+import Login from "./Utils/login";
+import { login } from "./api/request";
+import { UserContext } from "./context/UserContext";
+import { user } from "./model/user";
+import Logout from "./Utils/logout";
 
 function App() {
-  useEffect(() => {
-    axios.post('https://dummyjson.com/auth/login', {
-  username: 'kminchelle',
-  password: '0lelplR'
-    }, {
-      withCredentials: true,
-     
-})
-.then(response => {
-  console.log(response.data);
-  
-})
-.catch(error => {
-  console.log(error);
-});
-  })
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState<Boolean>(
+    localStorage.getItem("user") == null ? false : true
+  );
+  function loginUser(username: string, password: string) {
+    login(username, password).then((res) => {
+      // console.log(res)
+      // Cookies.set('access-token', res.token, { expires: 7 });
+      // Cookies.set('userId',res.id,{ expires: 7 })
+      setUser(true);
+      localStorage.setItem("user", JSON.stringify(res));
+      navigate("/");
+    });
+  }
+
+  function logoutUser() {
+    localStorage.removeItem("user");
+    setUser(false);
+    navigate("/");
+  }
   return (
     <div className="App">
-      <Navbar/>
-      <div>
-        <Routes>
-          <Route path='/' element={<Mainpage />} />
-          <Route path='/product/:productId' element={<ProductDetails/>}/>
-        </Routes>
-       </div>
-    
-
+      <UserContext.Provider value={user}>
+        <Navbar />
+        <div>
+          <Routes>
+            <Route path="/" element={<Mainpage />} />
+            <Route path="/product/:productId" element={<ProductDetails />} />
+            <Route path="/login" element={<Login login={loginUser} />} />
+            <Route path="/logout" element={<Logout logout={logoutUser} />} />
+          </Routes>
+        </div>
+      </UserContext.Provider>
     </div>
   );
 }
